@@ -582,30 +582,64 @@ and dayname(Date_of_Journey) in ('Saturday', 'Sunday')
 
 ![Banglore flight during weekdays](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/flight_departing_on_weekdays.png)
 
+## 6. Case study Calculate the arrival time for all flights by adding the duration to the departure time.
 
-## Another challenge arises because of the duration column i have to convert it into a minute
+### Another challenge arises because of the duration column i have to convert it into a minute
 
 ```SQL
-select *,hours+minNew as total_flight_in_minute from (select *,
-case
-		when min like '%h' then NULL
-        when min like '%m' then cast(min as signed)
-end as minNew
-from(select duration,cast(replace(substring_index(duration,' ',1),'h','') as SIGNED)*60 as hours,
-substring_index(duration,' ',-1) as min
-from flight) t) l;
+update flight t1
+set duration_min = replace(substring_index(duration,' ',1),'h','') *60 + 
+ case 
+	when substring_index(duration,' ',-1) = substring_index(duration,' ',1) then 0
+    else replace(substring_index(duration,' ',-1),'m','')
+ end;
 
 ```
 
 ![duration_Time_converting_into_time](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/total_time_for_flight.png)
 
+```I have combined the dep_time and date of the journey to create the new departure column.```
+
+``` Now I have created two more columns in order to add the minute to get the departure time and arrival time ```
+
+```SQL
+alter table flight
+add column departure DATETIME after Date_of_journey; 
+
+update flight t1
+set departure = str_to_date(concat(date_of_journey,' ',dep_time),'%Y-%m-%d %H:%i');
+```
+
+![Combining dep_time_and_Date_of_journey](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/combining_dep_time_and_date.png)
 
 
+Now i have added the duration minute to the departure column in order to get the Arrival date
+
+```SQL
+	update flight t1
+set arrival = (date_add(departure, interval duration_min minute));
+
+select departure,duration_min, date_add(departure, interval duration_min minute) from flight;
+```
+
+![adding Duration to departure to get the arrival time](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/adding_dep_to_duration_min.png)
 
 
+#### Case study 6 question answer
+```SQL
+select time(arrival) from flight;
+
+```
+![Calculate_Arrival_time](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/Arrival_time_calculated.png)
 
 
+## 7. Case study Calculate the arrival date for all the flights.
 
+```SQL
+
+select date(arrival) as Arrival_Date from flight;
+```
+![Calculate_Arrival_date](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/Arrival_date.png)
 
 
 
