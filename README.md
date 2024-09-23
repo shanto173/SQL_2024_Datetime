@@ -386,20 +386,218 @@ This updates the content of the post with post_id = 1. Since the updated_at colu
     15. Find all the pairs of cities having an average time duration of > 3 hours.
 
 
+![flight_dataset](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/flight_dataset.png)
+
+#### My first challenge is to clean the ROute column, extract the stop route this way
+![clened_route_image](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/cleaned_Router_column.png)
+
+    Breakdown of Data Cleaning Steps:
+    BLR → AMD → DEL: Extracted the intermediate stop "AMD".
+    BLR → BOM → AMD → DEL: Extracted both "BOM" and "AMD".
+    BLR → BOM → BHO → DEL: Extracted both "BOM" and "BHO".
+
+### Route column data cleaned Steps Performed.
+
+1. Add a New Column stops_name
+First, a new column stops_name was added to the flight table to store the cleaned version of the Route data.
+```SQL
+ALTER TABLE flight 
+ADD COLUMN stops_name VARCHAR(255) AFTER Route;
+```
+
+2. Copy Route Data to stops_name
+The existing Route data was copied to the stops_name column for further manipulation.
+
+```SQL
+UPDATE flight t1
+SET stops_name = t1.Route;
+```
+
+3. Remove First Stop from the Route
+The first stop (i.e., the first part of the route) was removed by using the substring_index() function, which extracts the portion of the route before the first occurrence of `→`.
+
+```SQL
+UPDATE flight t1
+SET stops_name = (
+  SELECT REPLACE(stops_name, SUBSTRING_INDEX(stops_name, ' → ', 1), '') 
+  FROM (SELECT * FROM flight) t2 
+  WHERE t1.index = t2.index
+);
+```
+
+4. Remove Last Stop from the Route
+Similarly, the last stop (i.e., the last part of the route) was removed by using substring_index() to extract the portion of the route after the last `→`.
+
+```SQL
+UPDATE flight t1
+SET stops_name = (
+  SELECT REPLACE(stops_name, SUBSTRING_INDEX(stops_name, ' → ' ,-1), '') 
+  FROM (SELECT * FROM flight) t2 
+  WHERE t1.index = t2.index
+);
+```
+
+5. Extract and Clean Stop Names Using Regex
+Using `REGEXP_SUBSTR`, I extracted and cleaned the `stops_name` to remove unwanted characters like extra spaces and commas.
+
+```SQL
+UPDATE flight t1
+SET stops_name = (
+  SELECT  
+  CASE 
+    WHEN nws != ',' THEN REGEXP_SUBSTR(nws, '[A-Z,]+')
+  END AS regexs
+  FROM (
+    SELECT stops_name, 
+           REPLACE(stops_name, '→', '') AS 'nw', 
+           REPLACE(REPLACE(stops_name, '→', ''), '  ', ',') AS 'nws' 
+    FROM (SELECT * FROM flight) t2 
+    WHERE t1.index = t2.index
+  ) t3
+);
+
+```
+
+6. Trim Leading and Trailing Commas
+Finally, I removed any leading and trailing commas from the `stops_name` column to ensure a clean, properly formatted result.
+
+```SQL
+UPDATE flight t1
+SET stops_name = (
+  SELECT TRIM(BOTH ',' FROM stops_name) 
+  FROM (SELECT * FROM flight) t2 
+  WHERE t1.index = t2.index
+);
+
+```
+#### Now the data looks like this after cleaning the Router COlumn
+
+![clened_route_image](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/cleaned_Router_column.png)
+
+### Date Column Formatting 
+![](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/date_formating.png)
+
+#### Steps performed for formatting the date Column
+
+```SQL
+update flight t1
+set Date_of_Journey = (
+select str_to_date(date_of_journey,'%d/%m/%Y') from (select * from flight) t2 where t1.index = t2.index);
+
+```
+
+## 1. Case study Find the month with the number of flights.
+
+```SQL
+SELECT 
+    MONTHNAME(Date_of_journey) AS Month_Name,
+    COUNT(*) AS Journey_Count
+FROM 
+    journeys_table
+GROUP BY 
+    MONTH(Date_of_journey)
+ORDER BY 
+    MONTH(Date_of_journey);
+
+```
+
+![month wise flight departure](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/In%202019%20Month%20wise%20flight%20departure%20count.png)
+
+    observation: The data reflects a clear seasonal pattern in travel behavior. High travel counts in June, March, and May are likely driven by school holidays. 
+    favorable weather, and special events, while low counts in January, December, and April may result from financial considerations, winter conditions, and routine family commitments.
+
+## 2. Case study Finds which weekday has the most costly flight?
+
+```SQL
+SELECT 
+    DAYNAME(Date_of_Journey) AS Weekday,
+    AVG(Price) AS Average_Price
+FROM 
+    flight
+GROUP BY 
+    DAYNAME(Date_of_Journey)
+ORDER BY 
+    AVG(Price) DESC;
+
+```
+
+![Avg_price vs Weekdays](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/avg_Price%20vs%20Weekdays.png)
+
+#### Analysis of Flight Price Variations:
+   > Thursday (9805.09): <br> >. Business Travel: Many business travelers prefer flying on Thursdays to reach their destinations before weekend meetings, driving up demand and prices.
+> Weekend Preparation: Travelers may begin their journeys on Thursdays for weekend getaways, increasing demand for flights.
+
+> Monday (9721.10):<br> >.Return of Business Travelers: Many return from weekend trips or business trips, leading to higher prices due to increased demand.
+> Sunday (9556.83)<br> >.End of Weekend Travel: People returning home from weekend trips may drive up prices, especially for popular destinations.
+
+#### Lower-Priced Weekdays
+> Tuesday (8960.45) and Saturday (8894.38): These days typically have lower demand, as fewer people travel for business or leisure compared to Thursdays and Mondays.
+> Friday (8556.50) and Wednesday (7996.29): Midweek flights generally see lower demand, particularly Wednesdays, as many travelers prefer weekends.
+
+## 3. Case study Finds the number of indigo flights every month?
+
+```SQL
+SELECT 
+    MONTHNAME(Date_of_Journey) AS Month_Name,
+    COUNT(*) AS Flight_Count
+FROM 
+    flight
+WHERE 
+    airline = 'indigo'
+GROUP BY 
+    MONTHNAME(Date_of_Journey)
+ORDER BY 
+    COUNT(*) DESC;
+
+```
+
+![Indigo month wise flight count](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/IndiGO%20Flights%20Counts%20monthwise.png)
+
+
+## 4. Case study Finds a list of all flights departing between 10 Am and 2 Pm from  Banglore to delhi? 
+
+```SQL
+SELECT * 
+FROM flight 
+WHERE source = 'Banglore' 
+  AND destination = 'Delhi'
+  AND dep_time BETWEEN '10:00:00' AND '14:00:00';
+
+
+```
+
+![Banglore to Delhi Flight](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/banglor_to_delhi.png)
 
 
 
+## 5. Case study Finds the number of flights departing on weekends from Banglore.
+
+```SQL
+select *,dayname(Date_of_Journey) from flight
+where source = 'Bangalore'
+and dayname(Date_of_Journey) in ('Saturday', 'Sunday')
+;
+
+```
+
+![Banglore flight during weekdays](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/flight_departing_on_weekdays.png)
 
 
+## Another challenge arises because of the duration column i have to convert it into a minute
 
+```SQL
+select *,hours+minNew as total_flight_in_minute from (select *,
+case
+		when min like '%h' then NULL
+        when min like '%m' then cast(min as signed)
+end as minNew
+from(select duration,cast(replace(substring_index(duration,' ',1),'h','') as SIGNED)*60 as hours,
+substring_index(duration,' ',-1) as min
+from flight) t) l;
 
+```
 
-
-
-
-
-
-
+![duration_Time_converting_into_time](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/total_time_for_flight.png)
 
 
 
