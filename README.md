@@ -1,7 +1,7 @@
-# SQL_2024_Datetime
+# SQL_2024_Datetime_Operator Along with SQL DateTime Case Study in Flight Dataset
 
 
-for practicing the datetime operator, trying to datetime database:
+for practicing the DateTime operator, trying to DateTime database:
 plan:
 1. I want to create a table for Uber.
 2. want to store Ride details (Ride_id,user_id,cab_id,start_time,end_time).
@@ -282,11 +282,11 @@ SELECT TIMESTAMPDIFF(HOUR, '2024-09-22 14:30:00', '2024-09-23 16:45:00') AS hour
 Example Output: 26
 ```
 
-### 7 TIMESTAMP vs DATETIME in MySQL
+## 7 TIMESTAMP vs DATETIME in MySQL
 
 TIMESTAMP and DATETIME are two data types in MySQL used to store date and time values. While they may seem similar, they have key differences that affect how they are used.
 
-#### 7.1 Comparison:
+### 7.1 Comparison:
 
     Range:
     
@@ -317,11 +317,73 @@ TIMESTAMP and DATETIME are two data types in MySQL used to store date and time v
     Use DATETIME: When you require a wider range or need to store the date and time as is without automatic conversions. when we store birthday date
 
 
+### 7.2 Usefulness of `CURRENT_TIMESTAMP` in MySQL
+
+The `CURRENT_TIMESTAMP` function in MySQL is useful for automatically setting and updating date and time fields when rows are inserted or modified. In this example, I will demonstrate how `CURRENT_TIMESTAMP` can be used in the context of tracking when a post is created and last updated in a `posts` table.
+
+#### Creating a table 
+
+```sql
+CREATE TABLE posts (
+    post_id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    user_id INTEGER,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+#### Inserting a Post
+
+```SQL
+INSERT INTO posts(user_id, content) VALUES (1, 'Hello World');
+```
+
+This command inserts a new post for user ID 1 with the content 'Hello World'. The created_at and updated_at columns will automatically be set to the current timestamp at the time of insertion.
+
+#### Output after Insertion:
+
+![Output After insertion](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/time_stamp1.png)
+
+    The created_at and updated_at fields have the same timestamp because the post was just created.
+
+#### Updating a Post
+
+```SQL
+UPDATE posts 
+SET content = 'No more Hello World'
+WHERE post_id = 1;
+```
+This updates the content of the post with post_id = 1. Since the updated_at column is defined with ON UPDATE CURRENT_TIMESTAMP, it will automatically update to the current timestamp when the row is modified.
+
+#### Output after Update:
+
+![Output after Update](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/time_stamp2.png)
+
+    created_at: Remains unchanged as this timestamp tracks when the post was first created.
+    updated_at: Changes to reflect the time when the post was modified.
 
 
 
 
+## FLow of the Case Study 
 
+    Case Study - Flights
+    
+    1. Find the month with the most number of flights.
+    2. Which weekday has the most costly flights?
+    3. Find the number of Indigo flights every month.
+    4. Find a list of all flights that depart between 10 AM and 2 PM from Delhi to Bangalore.
+    5. Find the number of flights departing on weekends from Bangalore.
+    6. Calculate the arrival time for all flights by adding the duration to the departure time.
+    7. Calculate the arrival date for all the flights.
+    8. Calculate the average duration of flights between two cities.
+    9. Find all flights that arrive at their destination after midnight.
+    10. Find the quarter-wise number of flights for each airline.
+    11. Find the longest flight distance (between cities in terms of time) in India.
+    12. Average time duration for flights that have 1 stop vs more than 1 stop.
+    13. Find all Air India flights in a given date range originating from Delhi.
+    14. Find the longest flight of each airline.
+    15. Find all the pairs of cities having an average time duration of > 3 hours.
 
 
 
