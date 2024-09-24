@@ -686,19 +686,146 @@ select date(arrival) as Arrival_Date from flight;
 
 
 
+## 11. Case study  Find quarter wise number of flights for each airline
+```SQL
+
+	select airline,quarter(departure),count(*)
+	from flight
+	group by airline, quarter(departure)
+	;
+
+```
+![11_Flight_count_quarter_wise](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/11.png)
 
 
 
+## 12. Case study Find the longest flight distance (between cities in terms of time) in India.
+```SQL
+
+	select Source,Destination,time_format(sec_to_time(max(Duration_min)*60),'%kh %im') 
+	from flight
+	group by Source, Destination;
+
+```
+![12_Longest_Flight_distancec_in_terms_of_times](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/12.png)
+
+
+## 13. Case study Average time duration for flights that have 1 stop vs more than 1 stop.
+```SQL
+
+	select Total_Stops,avg(duration_min) from flight
+	group by total_stops;
+
+```
+![13_comparizon_between_1_stop_vs_more_than_1_stop.](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/13.png)
+
+### 13.1 Case study Average time and average price duration for flights that have 1 stop vs more than 1 stop.
+```SQL
+
+	select Total_Stops,time_format(sec_to_time(avg(duration_min)*60),'%kh %im') as avg_duration_1_vs_many,
+	avg(price)
+	from flight
+	group by total_stops order by avg(price) desc;
+
+```
+![13_comparizon_between_price_and_1_stop_vs_more_than_1_stop](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/13.1.png)
 
     
+## 14 Case study  Find all Air India flights in a given date range originating from Delhi.
+
+```SQL
+
+	select * from flight
+	where Source = 'Delhi' and
+	DATE(departure) BETWEEN ('2019-03-01') AND ('2019-03-10');
+
+```
+![14_ Air India flights in a given date range originating from Delhi](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/14.png)
 
 
 
+## 15 Case study Find the longest flight of each airline.
+
+```SQL
+
+	select Airline,
+	time_format(sec_to_time(max(duration_min)*60),'%kh %im')
+	as 'longest flight'
+	from flight
+	group by Airline;
+
+```
+![15_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/15.png)
 
 
+### 15.1 Case study Find the longest flight of each airline along with there source and destination.
+
+```SQL
+
+	select Airline, Source, Destination,
+	time_Format(sec_to_time(max(duration_min)*60),'%kh %im')
+	as 'longest_flight'
+	from flight
+	group by Airline, source, Destination
+	having (airline,longest_flight) in (select airline,time_Format(sec_to_time(max(duration_min)*60),'%kh %im') from flight GROUP BY airline);
+
+```
+![15.1_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/15.1.png)
 
 
+## 16 Case study Find all the pairs of cities having an average time duration of > 3 hours.
 
+```SQL
+
+	select source, destination,avg(duration_min)
+	 from flight
+	 group by source, Destination
+	 HAVING avg(duration_min) > 180;
+
+```
+![15.1_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/16.png)
+
+
+## 17 Case study Make a weekday vs time grid showing the frequency of flights from Bangalore to Delhi
+
+```SQL
+
+	select dayname(departure),
+	 sum(case when hour(departure) between '00:00:00' and '05:00:00' then 1 else 0 end) as '12am - 6am',
+	 sum(case when hour(departure) between '06:00:00' and '11:00:00' then 1 else 0 end) as '6am - 12pm',
+	 sum(case when hour(departure) between '12:00:00' and '17:00:00' then 1 else 0 end) as '12pm - 6pm',
+	 sum(case when hour(departure) between '18:00:00' and '23:00:00' then 1 else 0 end) as '6pm - 12am'
+	 from flight where Source = 'Bangalore' and Destination = 'Delhi' 
+	 group by dayname(departure);
+
+```
+![17_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/17.png)
+
+![17_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/12am%20-%206am%2C%206am%20-%2012pm%2C%2012pm%20-%206pm%20and%206pm%20-%2012am.png)
+
+conclusion:
+This chart clearly indicates the busiest flight departure periods across the week, with a clear preference for early morning flights on weekdays, particularly around Wednesday. The data suggests a business-driven pattern, with leisure travel peaking toward the end of the week, particularly on Fridays and Sundays.
+
+
+## 18 Case study Make a weekday vs time grid showing average flight price from Banglore and Delhi
+
+```SQL
+
+	 select dayname(departure),
+	 avg(case when hour(departure) between '00:00:00' and '05:00:00' then price else NULL end) as '12am - 6am',
+	 avg(case when hour(departure) between '06:00:00' and '11:00:00' then price else NULL end) as '6am - 12pm',
+	 avg(case when hour(departure) between '12:00:00' and '17:00:00' then price else NULL end) as '12pm - 6pm',
+	 avg(case when hour(departure) between '18:00:00' and '23:00:00' then price else NUll end) as '6pm - 12am'
+	 from flight where Source = 'Bangalore' and Destination = 'Delhi' 
+	 group by dayname(departure);
+
+```
+![17_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/18.png)
+
+![17_ Longest flight for each airline](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/12am%20-%206am%2C%206am%20-%2012pm%2C%2012pm%20-%206pm%20and%206pm%20-%2012am%20(1).png)
+
+conclusion:
+The data suggests that flight prices are heavily influenced by business travel patterns. Flights between 6 AM - 12 PM tend to be the most expensive, particularly on weekdays, driven by business demand. In contrast, flights from 12 AM - 6 AM are consistently the cheapest due to lower demand. Prices on weekends tend to be lower overall, reflecting a shift from business to leisure travel. This report provides key insights into the optimal times for booking flights based on travel needs and budget preferences.
 
 
 
