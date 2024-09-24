@@ -1,6 +1,44 @@
 # SQL_2024_Datetime_Operator Along with SQL DateTime Case Study in Flight Dataset
 
 
+# Case Study Analysis: Flight Data
+
+This repository contains multiple case studies and analyses performed on flight data. Below is the index for easy navigation.
+
+## Index
+
+- [Flow of the Case Study](#flow-of-the-case-study)
+- [Route Column Data Cleaned Steps Performed](#route-column-data-cleaned-steps-performed)
+- [Date Column Formatting](#date-column-formatting)
+
+### Case Studies:
+
+1. [Find the Month with the Number of Flights](#1-case-study-find-the-month-with-the-number-of-flights)
+2. [Find Which Weekday Has the Most Costly Flight](#2-case-study-finds-which-weekday-has-the-most-costly-flight)
+3. [Find the Number of Indigo Flights Every Month](#3-case-study-finds-the-number-of-indigo-flights-every-month)
+4. [Find a List of All Flights Departing Between 10 AM and 2 PM from Banglore to Delhi](#4-case-study-finds-a-list-of-all-flights-departing-between-10-am-and-2-pm-from--banglore-to-delhi)
+5. [Find the Number of Flights Departing on Weekends from Banglore](#5-case-study-finds-the-number-of-flights-departing-on-weekends-from-banglore)
+6. [Calculate the Arrival Time for All Flights by Adding the Duration to the Departure Time](#6-case-study-calculate-the-arrival-time-for-all-flights-by-adding-the-duration-to-the-departure-time)
+   - [Question & Answer Section](#case-study-6-question-answer)
+7. [Calculate the Arrival Date for All Flights](#7-case-study-calculate-the-arrival-date-for-all-the-flights)
+8. [Find the Number of Flights which Travel on Multiple Dates](#8-case-study-find-the-number-of-flights-which-travel-on-multiple-dates)
+9. [Calculate the Average Duration of Flights Between Two Cities](#9-case-study-calculate-the-average-duration-of-flights-between-two-cities)
+   - [Bonus: Calculate Average Duration with Xh Ym Time Format](#91-case-study-extra-hard-question-calculate-the-average-duration-of-flights-between-two-cities-and-the-duration-time-format-should-be-in-xh-ym)
+10. [Find All Flights that Departed Before Midnight but Arrived After Midnight](#10-case-study-find-all-flights-that-departed-before-midnight-but-arrived-at-their-destination-after-midnight-having-only-0-stops-that-arrive-at-their-destination-after-midnight)
+11. [Find Quarter-Wise Number of Flights for Each Airline](#11-case-study--find-quarter-wise-number-of-flights-for-each-airline)
+12. [Find the Longest Flight Distance Between Cities in Terms of Time in India](#12-case-study-find-the-longest-flight-distance-between-cities-in-terms-of-time-in-india)
+13. [Average Time Duration for Flights with 1 Stop vs More than 1 Stop](#13-case-study-average-time-duration-for-flights-that-have-1-stop-vs-more-than-1-stop)
+    - [Bonus: Average Time and Average Price Comparison](#131-case-study-average-time-and-average-price-duration-for-flights-that-have-1-stop-vs-more-than-1-stop)
+14. [Find All Air India Flights in a Given Date Range Originating from Delhi](#14-case-study--find-all-air-india-flights-in-a-given-date-range-originating-from-delhi)
+15. [Find the Longest Flight of Each Airline](#15-case-study-find-the-longest-flight-of-each-airline)
+    - [Bonus: Longest Flight Along with Source and Destination](#151-case-study-find-the-longest-flight-of-each-airline-along-with-there-source-and-destination)
+16. [Find All the Pairs of Cities Having an Average Time Duration of 3 Hours](#16-case-study-find-all-the-pairs-of-cities-having-an-average-time-duration-of--3-hours)
+17. [Make a Weekday vs Time Grid Showing the Frequency of Flights from Bangalore to Delhi](#17-case-study-make-a-weekday-vs-time-grid-showing-the-frequency-of-flights-from-bangalore-to-delhi)
+18. [Make a Weekday vs Time Grid Showing Average Flight Price from Banglore and Delhi](#18-case-study-make-a-weekday-vs-time-grid-showing-average-flight-price-from-banglore-and-delhi)
+
+
+
+
 for practicing the DateTime operator, try to create DateTime database:
 plan:
 1. I want to create a table for Uber.
