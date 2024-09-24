@@ -1,7 +1,7 @@
 # SQL_2024_Datetime_Operator Along with SQL DateTime Case Study in Flight Dataset
 
 
-for practicing the DateTime operator, trying to DateTime database:
+for practicing the DateTime operator, try to create DateTime database:
 plan:
 1. I want to create a table for Uber.
 2. want to store Ride details (Ride_id,user_id,cab_id,start_time,end_time).
@@ -249,9 +249,9 @@ Now it will be converted into date time format.
 
 ### 6.1 DATE_ADD()
 
-xample 1: Adding Days to a Date
+example 1: Adding Days to a Date
 To add 10 days to a specific date:
-```sql
+```SQL
 SELECT DATE_ADD('2024-09-22', INTERVAL 10 DAY) AS new_date;
 Example Output: 2024-10-02
 ```
@@ -284,7 +284,7 @@ Example Output: 26
 
 ## 7 TIMESTAMP vs DATETIME in MySQL
 
-TIMESTAMP and DATETIME are two data types in MySQL used to store date and time values. While they may seem similar, they have key differences that affect how they are used.
+TIMESTAMP and DATETIME are two data types in MySQL that store date and time values. While they may seem similar, they have key differences that affect how they are used.
 
 ### 7.1 Comparison:
 
@@ -311,7 +311,7 @@ TIMESTAMP and DATETIME are two data types in MySQL used to store date and time v
     Auto Update:
     
     TIMESTAMP: Yes, it can auto-update to the current timestamp
-    DATETIME: No, must be explicitly set
+    DATETIME: No, it must be explicitly set
     Conclusion
     Use TIMESTAMP: When you need to track changes automatically and you're working within the UTC range. used in social media where posts created and updated or edited frequently
     Use DATETIME: When you require a wider range or need to store the date and time as is without automatic conversions. when we store birthday date
@@ -323,7 +323,7 @@ The `CURRENT_TIMESTAMP` function in MySQL is useful for automatically setting an
 
 #### Creating a table 
 
-```sql
+```SQL
 CREATE TABLE posts (
     post_id INTEGER AUTO_INCREMENT PRIMARY KEY,
     user_id INTEGER,
@@ -376,14 +376,15 @@ This updates the content of the post with post_id = 1. Since the updated_at colu
     5. Find the number of flights departing on weekends from Bangalore.
     6. Calculate the arrival time for all flights by adding the duration to the departure time.
     7. Calculate the arrival date for all the flights.
-    8. Calculate the average duration of flights between two cities.
-    9. Find all flights that arrive at their destination after midnight.
-    10. Find the quarter-wise number of flights for each airline.
-    11. Find the longest flight distance (between cities in terms of time) in India.
-    12. Average time duration for flights that have 1 stop vs more than 1 stop.
-    13. Find all Air India flights in a given date range originating from Delhi.
-    14. Find the longest flight of each airline.
-    15. Find all the pairs of cities having an average time duration of > 3 hours.
+    8. FInd the number of flights which travel on multiple dates;
+    9. Calculate the average duration of flights between two cities.
+    10. Find all flights that arrive at their destination after midnight.
+    11. Find the quarter-wise number of flights for each airline.
+    12. Find the longest flight distance (between cities in terms of time) in India.
+    13. Average time duration for flights that have 1 stop vs more than 1 stop.
+    14. Find all Air India flights in a given date range originating from Delhi.
+    15. Find the longest flight of each airline.
+    16. Find all the pairs of cities having an average time duration of > 3 hours.
 
 
 ![flight_dataset](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/flight_dataset.png)
@@ -640,6 +641,25 @@ select time(arrival) from flight;
 select date(arrival) as Arrival_Date from flight;
 ```
 ![Calculate_Arrival_date](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/Arrival_date.png)
+
+
+## 8. Case study FInd the number of flights which travel on multiple dates;
+```SQL
+
+	select * from flight where date(departure) != date(arrival);
+```
+![Flight_on_different_dates](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/flight_on_different_dates.png)
+
+
+## 9. Case study Calculate the average duration of flights between two cities;
+```SQL
+
+	select Source, Destination,avg(duration_min)
+        from flight
+	group by Source, Destination;
+```
+![Average_flight_duration_between_2_cities](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/Avg_time_flight_between_2_cities.png)
+    
 
 
 
