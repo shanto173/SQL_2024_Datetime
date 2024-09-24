@@ -1,15 +1,53 @@
-# SQL_2024_Datetime_Operator Along with SQL DateTime Case Study in Flight Dataset
+# SQL Date and Time Functions Overview and SQL Case Study on Datetime
 
-
-# Case Study Analysis: Flight Data
-
-This repository contains multiple case studies and analyses performed on flight data. Below is the index for easy navigation.
+This repository contains SQL case studies and examples of various date and time functions. Below is the index for easy navigation.
 
 ## Index
 
 - [Flow of the Case Study](#flow-of-the-case-study)
 - [Route Column Data Cleaned Steps Performed](#route-column-data-cleaned-steps-performed)
 - [Date Column Formatting](#date-column-formatting)
+
+### Date and Time Functions in SQL
+
+1. [SQL Queries for Date and Time](#2-date-and-time-functions-in-sql)
+   - [Get Today's Date](#22-get-todays-date)
+   - [Get Current Time](#23-get-current-time)
+   - [Get the Current Date and Time](#24-get-the-current-date-and-time)
+
+### Date and Time Extraction Functions
+
+1. [Date and Time](#1-date-and-time)
+2. [Year](#2-year)
+3. [Day or Day of Month](#3-day-or-dayofmonth)
+4. [Day of Week](#4-dayofweek)
+5. [Day of Year](#5-dayofyear)
+6. [Month and Month Name](#6-month-and-monthname)
+7. [Quarter](#7-quarter)
+8. [Week or Week of Year](#8-week-or-weekofyear)
+9. [Hour, Minute, and Second](#9-hour-minute-and-second)
+10. [Last Day](#10-last_day)
+
+### Date Time Formatting and Conversion
+
+1. [Date Time Format](#4-date_time-format)
+   - [Common Format Specifiers](#41-common-format-specifiers)
+2. [Date Time Type Conversion](#5-date-time-type-conversion)
+   - [Implicit Conversion](#51-implicit-conversion)
+   - [Explicit Conversion](#52-explicit-conversion)
+
+### Common Functions for Date Time Arithmetic
+
+1. [Date Add](#61-date_add)
+2. [Date Sub](#62-date_sub)
+3. [DateDiff](#63-datediff)
+4. [TimestampDiff](#64-timestampdiff)
+
+### MySQL Date Time Concepts
+
+1. [Timestamp vs Datetime in MySQL](#7-timestamp-vs-datetime-in-mysql)
+2. [Usefulness of CURRENT_TIMESTAMP in MySQL](#72-usefulness-of-current_timestamp-in-mysql)
+
 
 ### Case Studies:
 
