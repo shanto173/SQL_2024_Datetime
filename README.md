@@ -507,7 +507,7 @@ ORDER BY
     observation: The data reflects a clear seasonal pattern in travel behavior. High travel counts in June, March, and May are likely driven by school holidays. 
     favorable weather, and special events, while low counts in January, December, and April may result from financial considerations, winter conditions, and routine family commitments.
 
-## 2. Case study Finds which weekday has the most costly flight?
+## 2. Case study Finds which weekday has the most costly flight.
 
 ```SQL
 SELECT 
@@ -614,7 +614,7 @@ set departure = str_to_date(concat(date_of_journey,' ',dep_time),'%Y-%m-%d %H:%i
 ![Combining dep_time_and_Date_of_journey](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/combining_dep_time_and_date.png)
 
 
-Now i have added the duration minute to the departure column in order to get the Arrival date
+Now I have added the duration minute to the departure column in order to get the Arrival date
 
 ```SQL
 	update flight t1
@@ -659,6 +659,37 @@ select date(arrival) as Arrival_Date from flight;
 	group by Source, Destination;
 ```
 ![Average_flight_duration_between_2_cities](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/Avg_time_flight_between_2_cities.png)
+
+### 9.1. Case study Extra hard question Calculate the average duration of flights between two cities and the duration time format should be in (xh ym).
+```SQL
+
+	# There is a function called Sec_to_time that converts seconds into hours: min: sec
+
+	select source,Destination,avg(duration_min),time_format(sec_to_time(avg(duration_min)*60),'%kh %im') from flight 
+	group by Source, Destination
+;
+
+```
+![AVG_Duration_time_in_time_format](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/9.1_extra_hard_question.png)
+
+
+## 10. Case study Find all flights that departed before midnight but arrived at their destination after midnight having only 0 stops that arrive at their destination after midnight.
+```SQL
+
+	select * from flight 
+	where time(departure) < '12:00:00' 
+	and time(arrival) > '12:00:00'
+	and Total_Stops = 'non-stop';
+
+```
+![10_Flight_Arrived_After_midnight](https://github.com/shanto173/SQL_2024_Datetime/blob/main/images/10_flight_arrived_after_midnight.png)
+
+
+
+
+
+
+
     
 
 
