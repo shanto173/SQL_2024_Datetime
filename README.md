@@ -2,7 +2,7 @@
 
 This repository contains SQL case studies and examples of various date and time functions. Below is the index for easy navigation.
 
-## Index
+## Indexs
 
 - [Flow of the Case Study](#flow-of-the-case-study)
 - [Route Column Data Cleaned Steps Performed](#route-column-data-cleaned-steps-performed)
@@ -49,7 +49,7 @@ This repository contains SQL case studies and examples of various date and time 
 2. [Usefulness of CURRENT_TIMESTAMP in MySQL](#72-usefulness-of-current_timestamp-in-mysql)
 
 
-### Case Studies:
+### Case Studies Questions:
 
 1. [Find the Month with the Number of Flights](#1-case-study-find-the-month-with-the-number-of-flights)
 2. [Find Which Weekday Has the Most Costly Flight](#2-case-study-finds-which-weekday-has-the-most-costly-flight)
